@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - RetoJugador
+  - Spawner
+  - Dungeon
+  - Enemy Parent
   layers:
   - Default
   - TransparentFX

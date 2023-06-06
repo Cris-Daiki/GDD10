@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Movimiento : MonoBehaviour
 {
+    public PlayerData _playerdata;
+    [SerializeField] float hp;
+    float maxhp;
+    float def;
+    float fireDelay;
+    float dmg;
+
     public float VelocidadMovimiento =5.0f;
     public float VelocidadRotacion =200.0f;
     private Animator anim;
@@ -17,15 +24,20 @@ public class Movimiento : MonoBehaviour
     public float ImpulsodDeGolpe =10f;
 
 
-
-
-
-
-    // Start is called before the first frame update
+    void FillData()
+    {
+        hp =_playerdata.hp;
+        maxhp = _playerdata.maxhp;
+        def = _playerdata.def;
+        fireDelay = _playerdata.fireDelay;
+        dmg = _playerdata.dmg;
+    }
     void Start()
     {
         anim = GetComponent<Animator>();   
-        puedoSaltar = false; 
+        puedoSaltar = false;
+        FillData();
+
     }
 
     // Update is called once per frame
@@ -65,6 +77,19 @@ public class Movimiento : MonoBehaviour
         }
         else{
             EstoyCayendo();
+        }
+    }
+    public void Die()
+    {
+        _playerdata.lives -= 1;
+        Destroy(gameObject);
+    }
+    public void ReceiveDmg(float dmg)
+    {
+        hp = hp - (dmg / def);
+        if(hp < 0)
+        {
+            Destroy(gameObject);
         }
     }
     public void EstoyCayendo(){
