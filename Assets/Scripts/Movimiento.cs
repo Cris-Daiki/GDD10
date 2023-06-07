@@ -5,23 +5,13 @@ using UnityEngine;
 public class Movimiento : MonoBehaviour
 {
     public PlayerData _playerdata;
-    [SerializeField] float hp;
-    float maxhp;
-    float def;
-    float fireDelay;
-    float dmg;
-
-    public float VelocidadMovimiento =5.0f;
-    public float VelocidadRotacion =200.0f;
+    public Proyectile _bullet;
+    public Transform bullet_spawner;
+    public float hp, maxhp,def ,fireDelay = 1.5f ,dmg,VelocidadMovimiento =5.0f, 
+    VelocidadRotacion =200.0f, ImpulsodDeGolpe = 10f, x, y, fuerzasalto = 8f;
     private Animator anim;
-    public float x,y;
     public Rigidbody rb;
-    public float fuerzasalto = 8f;
-    public bool puedoSaltar;
-
-    public bool EstoyAtacando;
-    public bool AvanzoSolo;
-    public float ImpulsodDeGolpe =10f;
+    public bool puedoSaltar, EstoyAtacando, AvanzoSolo,enable_attack = true;
 
 
     void FillData()
@@ -37,6 +27,7 @@ public class Movimiento : MonoBehaviour
         anim = GetComponent<Animator>();   
         puedoSaltar = false;
         FillData();
+        StartCoroutine(AttackDelay());
 
     }
 
@@ -84,13 +75,49 @@ public class Movimiento : MonoBehaviour
         _playerdata.lives -= 1;
         Destroy(gameObject);
     }
-    public void ReceiveDmg(float dmg)
+    public void ChangeHp(float dmg)
     {
-        hp = hp - (dmg / def);
+        hp = hp - (dmg - (dmg * (def/100.0f)));
         if(hp < 0)
         {
+            StopCoroutine(AttackDelay());
             Destroy(gameObject);
         }
+    }
+    IEnumerator AttackDelay()
+    {
+        while (true)
+        {
+            if (Input.GetMouseButtonDown(1) || Input.GetMouseButton(1))
+            {
+                SpawnBullet();
+                yield return new WaitForSeconds(fireDelay);
+            }
+            yield return null;
+        }
+    }
+    void SpawnBullet()
+    {
+        Vector3 S_position = bullet_spawner.position;
+        Quaternion S_rotation = bullet_spawner.rotation;
+        var Spawned_bullet = Instantiate(_bullet.bullet_prefab, S_position, S_rotation);
+        Physics.IgnoreCollision(Spawned_bullet.transform.GetComponent<SphereCollider>(),transform.GetComponent<CapsuleCollider>());
+        /*
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity))
+        {
+            print("raycast hit");
+            Vector3 bulletDirection = hit.point - bullet_spawner.position;
+            Spawned_bullet.GetComponent<Rigidbody>().velocity = bulletDirection*_bullet.bullet_velocity;
+        }
+        else
+        {
+            print("raycast no hit");
+            Vector3 bulletDirection = (Camera.main.transform.position + Camera.main.transform.forward * 1000) - bullet_spawner.position;
+            Spawned_bullet.GetComponent<Rigidbody>().velocity = bulletDirection * _bullet.bullet_velocity;
+        }
+        */
+        Spawned_bullet.GetComponent<Rigidbody>().AddForce(bullet_spawner.transform.forward * _bullet.bullet_velocity, ForceMode.Impulse);
     }
     public void EstoyCayendo(){
         anim.SetBool("TocarSuelo",false);
@@ -105,4 +132,25 @@ public class Movimiento : MonoBehaviour
     public void DejoDeAvanzar(){
         AvanzoSolo = false;
     }
+    /*
+     private void Increase_EXP(int Exp_Gained)
+    {
+        var e = Exp_Gained + Current_Exp;
+        if (e >= 150)
+        {
+            Current_Exp = e - 1000;
+            Player_Lvl++;
+            Skills_Points += 2;
+            MaxHP += 10;
+            HitPoints = MaxHP;
+            Hp_bar.Update_healt();
+            HP_Counter.text = MaxHP.ToString();
+        }
+        else
+        {
+            Current_Exp += Exp_Gained;
+        }
+        
+    }
+     */
 }

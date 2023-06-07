@@ -11,12 +11,6 @@ public class AnimacionPuerta : MonoBehaviour
     {
         ani = GetComponent<Animator>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void AbrirPuerta(){
         ani.SetBool("ApretoLetra",true);
     }
