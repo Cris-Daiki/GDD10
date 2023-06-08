@@ -5,10 +5,12 @@ using UnityEngine;
 public class MovimientoEnemigo : MonoBehaviour
 {
     public int rutina;
-    public float Cronometro;
+    public float Cronometro, grado;
     public Animator ani;
     public Quaternion angulo;
-    public float grado;
+    //stats
+    public float hp, attack;
+    bool enable_attack = true;
 
     public GameObject target;
 
@@ -17,6 +19,7 @@ public class MovimientoEnemigo : MonoBehaviour
     {
         ani = GetComponent<Animator>();  
         target = GameObject.Find("Personaje");
+        StartCoroutine(AttackDelay());
     }
 
     // Update is called once per frame
@@ -57,6 +60,35 @@ public class MovimientoEnemigo : MonoBehaviour
 
         }
 
+    }
+    void OnCollisionEnter(Collision hit)
+    {
+        if (hit.transform.GetComponent<Movimiento>() != null && enable_attack)
+        {
+            hit.transform.GetComponent<Movimiento>().ChangeHp(attack);
+            enable_attack = false;
+        }
+    }
+    public void Change_HP(float dmg)
+    {
+        hp -= dmg;
+        if (hp < 0)
+        {
+            StopCoroutine(AttackDelay());
+            Destroy(gameObject);
+        }
+    }
+    IEnumerator AttackDelay()
+    {
+        while(true)
+        {
+            if (!enable_attack)
+            {
+                yield return new WaitForSeconds(1.5f);
+                enable_attack = true;
+            }
+            yield return null;
+        }
     }
     void Update()
     {

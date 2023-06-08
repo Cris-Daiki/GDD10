@@ -360,11 +360,14 @@
 "Assets/interactuable/interactuableanimacion.cs"
 "Assets/Mixamo/Magic Pack/Demo/CameraScroll.cs"
 "Assets/Scripts/AnimacionPuerta.cs"
+"Assets/Scripts/Bullet.cs"
 "Assets/Scripts/Entity_Controller.cs"
 "Assets/Scripts/LogicaPies.cs"
 "Assets/Scripts/Movimiento.cs"
 "Assets/Scripts/MovimientoEnemigo.cs"
 "Assets/Scripts/PlayerData.cs"
+"Assets/Scripts/Play_Exit.cs"
+"Assets/Scripts/Proyectile.cs"
 "Assets/Scripts/RoomEnemy.cs"
 -langversion:9.0
 
