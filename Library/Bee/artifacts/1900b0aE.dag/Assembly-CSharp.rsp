@@ -365,6 +365,7 @@
 "Assets/Scripts/LogicaPies.cs"
 "Assets/Scripts/Movimiento.cs"
 "Assets/Scripts/MovimientoEnemigo.cs"
+"Assets/Scripts/Pause.cs"
 "Assets/Scripts/PlayerData.cs"
 "Assets/Scripts/Play_Exit.cs"
 "Assets/Scripts/Proyectile.cs"
