@@ -7,8 +7,9 @@ public class Movimiento : MonoBehaviour
     public PlayerData _playerdata;
     public Proyectile _bullet;
     public Transform bullet_spawner;
-    public float hp, maxhp,def ,fireDelay = 1.5f ,dmg,VelocidadMovimiento =5.0f, 
+    public float hp, maxhp,def ,fireDelay = 1.5f ,dmg,VelocidadMovimiento =5.0f,
     VelocidadRotacion =200.0f, ImpulsodDeGolpe = 10f, x, y, fuerzasalto = 8f;
+    public int current_exp, lvl = 1;
     private Animator anim;
     public Rigidbody rb;
     public bool puedoSaltar, EstoyAtacando, AvanzoSolo,enable_attack = true;
@@ -21,6 +22,8 @@ public class Movimiento : MonoBehaviour
         def = _playerdata.def;
         fireDelay = _playerdata.fireDelay;
         dmg = _playerdata.dmg;
+        lvl = _playerdata.level;
+        current_exp = _playerdata.experience;
     }
     void Start()
     {
@@ -42,6 +45,38 @@ public class Movimiento : MonoBehaviour
             rb.velocity = transform.forward* ImpulsodDeGolpe;
         }
         
+    }
+    public void AddExp(int exp_val)
+    {
+        current_exp += exp_val;
+        if(lvl <= 15)
+        {
+            if(current_exp >= (2*lvl+7))
+            {
+                current_exp -= (2*lvl+7);
+                lvl++;
+            }
+        }
+        else if(lvl > 16 && lvl <= 30)
+        {
+            if (current_exp >= (5 * lvl -38))
+            {
+                current_exp -= (5 * lvl -38);
+                lvl++;
+            }
+        }
+        else if(lvl > 30)
+        {
+            if (current_exp >= (9 * lvl -158))
+            {
+                current_exp -= (9 * lvl - 158);
+                lvl++;
+            }
+        }
+        else
+        {
+            Die();
+        }
     }
     void Update()
     {

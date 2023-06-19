@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 {
     public int lives;
+    public int level;
+    public int experience;
     public float hp;
     public float maxhp;
     public float def;

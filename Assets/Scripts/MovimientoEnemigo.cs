@@ -10,6 +10,7 @@ public class MovimientoEnemigo : MonoBehaviour
     public Quaternion angulo;
     //stats
     public float hp, attack;
+    public int exp;
     bool enable_attack = true;
 
     public GameObject target;
@@ -75,6 +76,7 @@ public class MovimientoEnemigo : MonoBehaviour
         if (hp < 0)
         {
             StopCoroutine(AttackDelay());
+            target.GetComponent<Movimiento>().AddExp(exp);
             Destroy(gameObject);
         }
     }
