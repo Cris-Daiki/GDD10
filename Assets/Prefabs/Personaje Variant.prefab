@@ -361,7 +361,7 @@ MonoBehaviour:
   _playerdata: {fileID: 11400000, guid: a9510a4e14f841c4198142ba0ab3a966, type: 2}
   _bullet: {fileID: 11400000, guid: 4f129fc7726dcd743a87f21a87dba05c, type: 2}
   bullet_spawner: {fileID: 1595351410998322259}
-  hp: 0
+  hp: 5
   maxhp: 0
   def: 0
   fireDelay: 1.5

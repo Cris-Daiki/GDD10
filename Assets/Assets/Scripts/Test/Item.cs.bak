@@ -1,0 +1,17 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "New Item", menuName = "Asset/Item")]
+public class Item : ScriptableObject
+{
+    public string itemID;
+    public string itemName;
+    [TextArea]
+    public string itemDesc;
+    public int itemCost;
+    public int itemDMG;
+    public int itemSpd;
+    public int itemAspd;
+    public int itemEffectID;
+    public int itemHP;
+    public Sprite itemSprite;
+}

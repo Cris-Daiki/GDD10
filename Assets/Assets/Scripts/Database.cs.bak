@@ -1,0 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class Database : MonoBehaviour
+{
+    public ItemDatabase items;
+
+    private Database instance;
+
+    void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public Item GetItemByID(string ID)
+    {
+        return instance.items.allItems.FirstOrDefault(i => i.itemID == ID);
+    }
+
+    public Item GetRandomItem()
+    {
+        return instance.items.allItems[Random.Range(0, instance.items.allItems.Count())];
+    }
+}

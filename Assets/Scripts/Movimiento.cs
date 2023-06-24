@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Movimiento : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class Movimiento : MonoBehaviour
     private Animator anim;
     public Rigidbody rb;
     public bool puedoSaltar, EstoyAtacando, AvanzoSolo,enable_attack = true;
+    public GameObject itemIconPrefab;
+    public Transform inventoryContent;
+    private List<GameObject> uiInventory;
+    private List<Item> inventory;
 
 
     void FillData()
@@ -31,7 +36,24 @@ public class Movimiento : MonoBehaviour
         puedoSaltar = false;
         FillData();
         StartCoroutine(AttackDelay());
+        inventory = new List<Item>();
+        uiInventory = new List<GameObject>();
 
+    }
+
+    public void AddToInventory(Item item) {
+        inventory.Add(item);
+        GameObject go = Instantiate(itemIconPrefab, inventoryContent);
+        Image im = go.GetComponent<Image>();
+        im.sprite = item.itemIcon;
+        uiInventory.Add(go);
+    }
+
+    public void OnTriggerEnter(Collider other) {
+        IInteractable interactable = other.GetComponent<IInteractable>();
+        if (interactable != null) {
+            interactable.Interact(this);
+        }
     }
 
     // Update is called once per frame

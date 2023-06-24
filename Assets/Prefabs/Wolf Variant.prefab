@@ -486,6 +486,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 175852, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7131458298474884772}
+    - targetCorrespondingSourceObject: {fileID: 175852, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4878428093063783115}
   m_SourcePrefab: {fileID: 100100000, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
 --- !u!95 &2941835081994993546 stripped
 Animator:
@@ -511,9 +514,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rutina: 0
   Cronometro: 0
+  grado: 0
   ani: {fileID: 2941835081994993546}
   angulo: {x: 0, y: 0, z: 0, w: 0}
-  grado: 0
+  hp: 10
+  attack: 3
   target: {fileID: 0}
 --- !u!136 &7131458298474884772
 CapsuleCollider:
@@ -538,3 +543,30 @@ CapsuleCollider:
   m_Height: 2.492609
   m_Direction: 1
   m_Center: {x: 0.000000004420834, y: 1.2180634, z: -0.23098563}
+--- !u!54 &4878428093063783115
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2941835082002136876}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
