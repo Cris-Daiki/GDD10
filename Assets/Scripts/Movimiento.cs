@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Movimiento : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Movimiento : MonoBehaviour
     public Transform inventoryContent;
     private List<GameObject> uiInventory;
     private List<Item> inventory;
+    public TMP_Text DebugStat_hp, DebugStat_maxhp, DebugStat_def, DebugStat_fireDelay, DebugStat_dmg;
 
 
     void FillData()
@@ -29,16 +31,40 @@ public class Movimiento : MonoBehaviour
         dmg = _playerdata.dmg;
         lvl = _playerdata.level;
         current_exp = _playerdata.experience;
+        DebugStat_hp.SetText("HP: "+ _playerdata.hp + "/" + hp);
+        DebugStat_maxhp.SetText("MAXHP: "+ _playerdata.maxhp + "/" + maxhp);
+        DebugStat_def.SetText("DEF: "+ _playerdata.def + "/" + def);
+        DebugStat_fireDelay.SetText("FIREDELAY: "+ _playerdata.fireDelay + "/" + fireDelay);
+        DebugStat_dmg.SetText("DMG: "+ _playerdata.dmg + "/" + dmg);
     }
     void Start()
     {
+        DebugStat_hp = GameObject.Find("Statdebug").GetComponent<TMP_Text>();
+        DebugStat_maxhp = GameObject.Find("Statdebug (1)").GetComponent<TMP_Text>();
+        DebugStat_def = GameObject.Find("Statdebug (2)").GetComponent<TMP_Text>();
+        DebugStat_fireDelay = GameObject.Find("Statdebug (3)").GetComponent<TMP_Text>();
+        DebugStat_dmg = GameObject.Find("Statdebug (4)").GetComponent<TMP_Text>();
         anim = GetComponent<Animator>();   
         puedoSaltar = false;
         FillData();
         StartCoroutine(AttackDelay());
         inventory = new List<Item>();
         uiInventory = new List<GameObject>();
+    }
 
+    void Update_Stats(Item item)
+    {
+        if((hp + item.alter_hp) > maxhp) hp = maxhp;
+        else hp = hp + item.alter_hp;
+        maxhp = maxhp + item.alter_maxhp;
+        def = def + item.alter_def;
+        fireDelay = fireDelay - (item.alter_fireDelay * 5.0f / 100);
+        dmg = dmg + item.alter_dmg;
+        DebugStat_hp.SetText("HP: "+ _playerdata.hp + "/" + hp);
+        DebugStat_maxhp.SetText("MAXHP: "+ _playerdata.maxhp + "/" + maxhp);
+        DebugStat_def.SetText("DEF: "+ _playerdata.def + "/" + def);
+        DebugStat_fireDelay.SetText("FIREDELAY: "+ _playerdata.fireDelay + "/" + fireDelay);
+        DebugStat_dmg.SetText("DMG: "+ _playerdata.dmg + "/" + dmg);
     }
 
     public void AddToInventory(Item item) {
@@ -47,6 +73,7 @@ public class Movimiento : MonoBehaviour
         Image im = go.GetComponent<Image>();
         im.sprite = item.itemIcon;
         uiInventory.Add(go);
+        Update_Stats(item);
     }
 
     public void OnTriggerEnter(Collider other) {
@@ -135,6 +162,7 @@ public class Movimiento : MonoBehaviour
     public void ChangeHp(float dmg)
     {
         hp = hp - (dmg - (dmg * (def/100.0f)));
+        DebugStat_hp.SetText("HP: "+ _playerdata.hp + "/" + hp);
         if(hp < 0)
         {
             StopCoroutine(AttackDelay());
@@ -189,6 +217,7 @@ public class Movimiento : MonoBehaviour
     public void DejoDeAvanzar(){
         AvanzoSolo = false;
     }
+    
     /*
      private void Increase_EXP(int Exp_Gained)
     {

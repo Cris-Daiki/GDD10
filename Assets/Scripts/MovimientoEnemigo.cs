@@ -12,8 +12,13 @@ public class MovimientoEnemigo : MonoBehaviour
     public float hp, attack;
     public int exp;
     bool enable_attack = true;
+    public float VelocidadMovimiento;
 
-    public GameObject target;
+    private GameObject target;
+
+    public float playerInSightRange;
+
+    public float timeBetweenAttacks;
 
     // Start is called before the first frame update
     void Start()
@@ -21,12 +26,13 @@ public class MovimientoEnemigo : MonoBehaviour
         ani = GetComponent<Animator>();  
         target = GameObject.Find("Personaje");
         StartCoroutine(AttackDelay());
+        VelocidadMovimiento = 5f;
     }
 
     // Update is called once per frame
 
     public void Comportamiento_Enemigo(){
-        if(Vector3.Distance(transform.position, target.transform.position)>10){
+        if(Vector3.Distance(transform.position, target.transform.position)> playerInSightRange){
             ani.SetBool("run",false);
             Cronometro +=1*Time.deltaTime;
             if(Cronometro >= 4){
@@ -50,26 +56,41 @@ public class MovimientoEnemigo : MonoBehaviour
                     break;
             }
 
-        }else{
+        }
+        else if(Vector3.Distance(transform.position, target.transform.position) <= 2f) {
+            ani.SetBool("run", false);
+            ani.SetBool("walk",false);
+            if(enable_attack) {
+                target.transform.GetComponent<Movimiento>().ChangeHp(attack);
+                enable_attack = false;
+                Invoke("ResetAttack", timeBetweenAttacks);
+            }
+        }
+        else{
             var lookPos = target.transform.position - transform.position;
             lookPos.y = 0;
             var rotation = Quaternion.LookRotation(lookPos);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation,3);
             ani.SetBool("walk",false);
             ani.SetBool("run",true);
-            transform.Translate(Vector3.forward *10*Time.deltaTime);
-
-        }
-
-    }
-    void OnCollisionEnter(Collision hit)
-    {
-        if (hit.transform.GetComponent<Movimiento>() != null && enable_attack)
-        {
-            hit.transform.GetComponent<Movimiento>().ChangeHp(attack);
-            enable_attack = false;
+            transform.Translate(Vector3.forward *VelocidadMovimiento*Time.deltaTime);
         }
     }
+
+    private void ResetAttack() {
+        enable_attack = true;
+    }
+
+    // void OnCollisionEnter(Collision hit)
+    // {
+    //     Debug.Log(hit.transform.GetComponent<Movimiento>() != null);
+    //     if (hit.transform.GetComponent<Movimiento>() != null && enable_attack)
+    //     {
+    //         Debug.Log("el lobo atacó");
+    //         hit.transform.GetComponent<Movimiento>().ChangeHp(attack);
+    //         enable_attack = false;
+    //     }
+    // }
     public void Change_HP(float dmg)
     {
         hp -= dmg;
@@ -86,6 +107,7 @@ public class MovimientoEnemigo : MonoBehaviour
         {
             if (!enable_attack)
             {
+                Debug.Log("hola");
                 yield return new WaitForSeconds(1.5f);
                 enable_attack = true;
             }

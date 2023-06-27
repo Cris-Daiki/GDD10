@@ -6,6 +6,11 @@ public class Item : MonoBehaviour, IInteractable
 {
     public Sprite itemIcon;
     public int amount;
+    public float alter_hp;
+    public float alter_maxhp;
+    public float alter_def;
+    public float alter_fireDelay;
+    public float alter_dmg;
 
     public void Interact(Movimiento player)
     {
